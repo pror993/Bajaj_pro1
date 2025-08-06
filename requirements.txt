@@ -1,4 +1,4 @@
- fastapi
+fastapi
 uvicorn
 PyYAML
 transformers
@@ -9,7 +9,7 @@ regex
 python-multipart
 
 # Document processing
-PyPDF2
+pypdf            # use pypdf instead of deprecated PyPDF2
 python-docx
 Pillow
 opencv-python
@@ -44,3 +44,10 @@ pinecone-client         # or weaviate-client / faiss-cpu
 # Layout & segmentation
 regex                   # for clause boundary patterns
 nltk                    # sentence tokenization (optional)
+
+openai
+langchain
+pydantic
+business-rules
+# If you want Gemini LLM support, add:
+# langchain-google-genai

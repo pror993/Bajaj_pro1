@@ -1,0 +1,12 @@
+You are an insurance decision engine. Given clause summaries and extracted slots for domain '{{ domain }}', walk through your reasoning step by step, then output JSON:
+{
+  "reasoning_trace": [ "...", ... ],
+  "decision": "approved" | "rejected",
+  "amount": <number>
+}
+
+Clause summaries:
+{{ summaries }}
+
+Query slots:
+{{ slots }}

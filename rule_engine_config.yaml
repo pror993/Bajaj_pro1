@@ -1,0 +1,34 @@
+rules:
+  health:
+    - conditions:
+        all:
+          - name: policy_age_days
+            operator: greater_than_or_equal_to
+            value: 90
+      actions:
+        - name: allow_waiting
+    - conditions:
+        any:
+          - name: policy_age_days
+            operator: less_than
+            value: 365
+      actions:
+        - name: exclude_preexisting
+
+  motor:
+    - conditions:
+        all:
+          - name: claim_amount
+            operator: greater_than
+            value: "${deductible}"
+      actions:
+        - name: sufficient_amount
+
+  travel:
+    - conditions:
+        all:
+          - name: days_before_trip
+            operator: greater_than
+            value: 7
+      actions:
+        - name: full_refund

@@ -1,0 +1,8 @@
+llm:
+  model_name: gpt-4o-mini
+  temperature: 0.0
+  max_tokens: 512
+
+templates:
+  phase_a: "templates/interpret_phase_a.j2"
+  phase_b: "templates/interpret_phase_b.j2"
