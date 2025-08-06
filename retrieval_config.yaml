@@ -1,0 +1,37 @@
+sparse:
+  engine: elasticsearch
+  index_name: claims-sparse-index
+  host: http://localhost:9200
+  timeout: 30
+  max_retries: 3
+
+dense:
+  vector_store: faiss  # or pinecone
+  index_name: claims-dense-index
+  namespace: default
+  model_name: sentence-transformers/all-MiniLM-L6-v2
+  similarity_metric: cosine
+
+hybrid:
+  weight_sparse: 0.3
+  weight_dense: 0.7
+  top_k: 15
+  rerank: true
+
+dedupe:
+  method: agglomerative
+  similarity_threshold: 0.85
+  min_cluster_size: 1
+
+prompt_templates:
+  health:
+    template: "Health claim: {procedure}, {duration} policy → clauses about {procedure} coverage under policies {duration}."
+    fallback: "Health insurance claim for {procedure} with {duration} policy duration."
+  
+  motor:
+    template: "Motor claim: {vehicle_type} accident on {accident_date} at {location} → clauses about {vehicle_type} accident coverage and {damage_type}."
+    fallback: "Motor vehicle insurance claim for {vehicle_type} accident."
+  
+  travel:
+    template: "Travel claim: {destination} trip for {trip_duration} → clauses about travel coverage to {destination} and {cancellation_reason}."
+    fallback: "Travel insurance claim for {destination} trip." 

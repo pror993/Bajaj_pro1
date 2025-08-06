@@ -1,0 +1,46 @@
+ fastapi
+uvicorn
+PyYAML
+transformers
+torch           # or torch-cpu
+spacy
+en-core-web-sm  # spaCy small English model
+regex
+python-multipart
+
+# Document processing
+PyPDF2
+python-docx
+Pillow
+opencv-python
+PyMuPDF
+
+# OCR
+pytesseract
+
+# Vector database
+chromadb
+sentence-transformers
+
+# Image processing
+numpy
+
+# Retrieval dependencies
+elasticsearch
+faiss-cpu
+scikit-learn
+# Document loaders & OCR
+unstructured            # for langchain UnstructuredPDFLoader, DOCXLoader
+pdfplumber              # PDF text/layout extraction
+python-docx             # .docx parsing
+pytesseract             # wrapper for Tesseract OCR
+Pillow                  # image ops for OCR
+pdf2image               # convert pages to images
+
+# Vector store & embeddings
+langchain               # for DocumentLoader, TextSplitter, Embeddings, VectorStore
+pinecone-client         # or weaviate-client / faiss-cpu
+
+# Layout & segmentation
+regex                   # for clause boundary patterns
+nltk                    # sentence tokenization (optional)

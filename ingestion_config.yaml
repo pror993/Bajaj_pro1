@@ -1,0 +1,41 @@
+# Ingestion Configuration
+ingestion:
+  # Document processing settings
+  supported_formats:
+    - pdf
+    - docx
+    - doc
+    - txt
+    - email
+  
+  # OCR settings
+  ocr:
+    enabled: true
+    engine: "tesseract"  # or "pytesseract"
+    language: "eng"
+    confidence_threshold: 0.7
+  
+  # Segmentation settings
+  segmentation:
+    min_chunk_size: 100
+    max_chunk_size: 1000
+    overlap: 50
+    
+  # Embedding settings
+  embeddings:
+    model: "sentence-transformers/all-MiniLM-L6-v2"
+    batch_size: 32
+    max_length: 512
+    
+  # Vector database settings
+  vector_db:
+    type: "chroma"  # or "pinecone", "weaviate"
+    collection_name: "claims_documents"
+    similarity_metric: "cosine"
+    
+  # Processing pipeline
+  pipeline:
+    enable_ocr: true
+    enable_segmentation: true
+    enable_embedding: true
+    enable_indexing: true 
