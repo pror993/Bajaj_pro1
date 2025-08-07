@@ -4,6 +4,7 @@ from typing import Dict, List, Any, Optional, Tuple
 from sentence_transformers import SentenceTransformer
 import torch
 from dataclasses import dataclass
+import os
 
 
 @dataclass
@@ -28,9 +29,10 @@ class DocumentEmbedder:
     
     def _load_config(self, config_path: str) -> Dict:
         """Load ingestion configuration."""
+        config_path = os.path.abspath(config_path)
         try:
             with open(config_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading config: {e}")
             return {}
@@ -247,4 +249,4 @@ class DocumentEmbedder:
             'max_length': self.max_length,
             'batch_size': self.batch_size,
             'device': str(self.model.device)
-        } 
+        }

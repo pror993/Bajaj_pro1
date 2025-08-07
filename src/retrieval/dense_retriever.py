@@ -28,9 +28,11 @@ class DenseRetriever:
     
     def _load_config(self, config_path: str) -> Dict:
         """Load retrieval configuration."""
+        import os
+        config_path = os.path.abspath(config_path)
         try:
             with open(config_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading retrieval config: {e}")
             return {}
@@ -317,4 +319,4 @@ class DenseRetriever:
             
         except Exception as e:
             logging.error(f"Error deleting document: {e}")
-            return False 
+            return False

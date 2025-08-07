@@ -2,6 +2,7 @@ import yaml
 from typing import Dict, List, Any, Optional, Tuple
 import numpy as np
 import logging
+import os
 
 
 class HybridRetriever:
@@ -26,9 +27,10 @@ class HybridRetriever:
     
     def _load_config(self, config_path: str) -> Dict:
         """Load retrieval configuration."""
+        config_path = os.path.abspath(config_path)
         try:
             with open(config_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading retrieval config: {e}")
             return {}
@@ -272,4 +274,4 @@ class HybridRetriever:
     def enable_reranking(self, enable: bool = True):
         """Enable or disable reranking."""
         self.rerank = enable
-        logging.info(f"Reranking {'enabled' if enable else 'disabled'}") 
+        logging.info(f"Reranking {'enabled' if enable else 'disabled'}")

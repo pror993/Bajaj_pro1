@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import intake, clarifications
+from .routers import intake  # Only import intake, not clarifications
+# from .routers import clarifications  # Commented out to disable clarifications
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -20,7 +21,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(intake.router, prefix="/api", tags=["intake"])
-app.include_router(clarifications.router, prefix="/api", tags=["clarifications"])
+# app.include_router(clarifications.router, prefix="/api", tags=["clarifications"])  # Commented out to disable clarifications
 
 @app.get("/")
 async def root():
@@ -30,4 +31,4 @@ async def root():
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
-    return {"status": "healthy", "service": "claims-api"} 
+    return {"status": "healthy", "service": "claims-api"}

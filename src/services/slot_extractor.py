@@ -18,9 +18,11 @@ class SlotExtractor:
     
     def _load_profiles(self, profiles_path: str) -> Dict:
         """Load domain profiles from YAML file."""
+        import os
+        profiles_path = os.path.abspath(profiles_path)
         try:
             with open(profiles_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading profiles: {e}")
             return {}
@@ -87,4 +89,4 @@ class SlotExtractor:
         return {
             "slots": extracted_slots,
             "low_confidence_slots": low_confidence_slots
-        } 
+        }

@@ -17,9 +17,10 @@ class DocumentLoader:
     
     def _load_config(self, config_path: str) -> Dict:
         """Load ingestion configuration."""
+        config_path = os.path.abspath(config_path)
         try:
             with open(config_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading config: {e}")
             return {}
@@ -183,4 +184,4 @@ class DocumentLoader:
                     print(f"Error loading {file_path}: {e}")
                     continue
         
-        return documents 
+        return documents

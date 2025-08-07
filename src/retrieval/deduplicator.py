@@ -4,6 +4,7 @@ from typing import Dict, List, Any, Optional
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.metrics.pairwise import cosine_similarity
 import logging
+import os
 
 
 class Deduplicator:
@@ -18,9 +19,10 @@ class Deduplicator:
     
     def _load_config(self, config_path: str) -> Dict:
         """Load retrieval configuration."""
+        config_path = os.path.abspath(config_path)
         try:
             with open(config_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading retrieval config: {e}")
             return {}
@@ -313,4 +315,4 @@ class Deduplicator:
             self.method = method
             logging.info(f"Updated deduplication method to {method}")
         else:
-            logging.warning(f"Unknown deduplication method: {method}") 
+            logging.warning(f"Unknown deduplication method: {method}")

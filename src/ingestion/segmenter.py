@@ -1,7 +1,7 @@
-import yaml
 import re
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
+import os
 
 
 @dataclass
@@ -24,14 +24,31 @@ class DocumentSegmenter:
         self.overlap = self.segmentation_config.get("overlap", 50)
     
     def _load_config(self, config_path: str) -> Dict:
-        """Load ingestion configuration."""
+        config_path = os.path.abspath(config_path)
         try:
             with open(config_path, 'r') as file:
-                return yaml.safe_load(file)
+                return yaml.safe_load(file) or {}
         except Exception as e:
             print(f"Error loading config: {e}")
             return {}
     
+    def _extract_tables(self, content: str) -> List[DocumentSegment]:
+        """Extract table structures from content."""
+        # Simple regex for Markdown tables: header|---|row
+        table_pattern = re.compile(
+            r'(?:^|\n)((?:\|[^\n]+\|\n)+\|(?:\s*-+\s*\|)+\n(?:\|[^\n]+\|\n?)+)', re.MULTILINE)
+        matches = list(table_pattern.finditer(content))
+        segments = []
+        for m in matches:
+            segments.append(DocumentSegment(
+                content=m.group(1),
+                segment_type='table',
+                start_pos=m.start(1),
+                end_pos=m.end(1),
+                metadata={}
+            ))
+        return segments
+
     def segment_document(self, content: str, metadata: Optional[Dict[str, Any]] = None) -> List[DocumentSegment]:
         """
         Segment document content into logical chunks.
@@ -68,31 +85,6 @@ class DocumentSegmenter:
         
         return segments
     
-    def _extract_tables(self, content: str) -> List[DocumentSegment]:
-        """Extract table structures from content."""
-        table_segments = []
-        # Robust Markdown table pattern: header, separator, and at least one row
-        pattern = r'(\|[^\n]+\|\n\|[-: ]+\|(?:\n\|[^\n]+\|)+)'
-        matches = re.finditer(pattern, content, re.MULTILINE)
-        for match in matches:
-            table_content = match.group(1)
-            # Ensure at least header, separator, and one row
-            rows = [row for row in table_content.split('\n') if '|' in row]
-            if len(rows) >= 3:
-                segment = DocumentSegment(
-                    content=table_content.strip(),
-                    segment_type='table',
-                    start_pos=match.start(),
-                    end_pos=match.end(),
-                    metadata={
-                        'table_type': 'markdown',
-                        'num_rows': len(rows) - 2,  # exclude header and separator
-                        'raw_match': match.group(0)
-                    }
-                )
-                table_segments.append(segment)
-        return table_segments
-
     def _extract_lists(self, content: str) -> List[DocumentSegment]:
         """Extract list structures from content."""
         list_segments = []
